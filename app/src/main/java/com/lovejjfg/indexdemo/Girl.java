@@ -1,11 +1,14 @@
 package com.lovejjfg.indexdemo;
 
-public class GoodMan implements Comparable<GoodMan> {
+import android.support.annotation.NonNull;
+
+@SuppressWarnings("unused")
+public class Girl implements Comparable<Girl> {
 
     private String mName;
     private String mPinyin;
     
-    public GoodMan(String name) {
+    public Girl(String name) {
         mName = name;
         mPinyin = PinYinUtil.toPinyin(mName);
     }
@@ -24,7 +27,7 @@ public class GoodMan implements Comparable<GoodMan> {
     }
 
     @Override
-    public int compareTo(GoodMan another) {
+    public int compareTo(@NonNull Girl another) {
         return mPinyin.compareTo(another.getPinyin());
     }
 }

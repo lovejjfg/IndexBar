@@ -1,7 +1,7 @@
 package com.lovejjfg.indexdemo;
 
-import android.content.Context;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,36 +12,32 @@ import java.util.ArrayList;
 
 public class IndexAdapter extends BaseAdapter implements ListAdapter {
 
-    private ArrayList<GoodMan> mPersons;
-    private Context mContext;
-    private String mFirstPinyin;
-    private String mPreFirstPinyin;
+    private ArrayList<Girl> mGirls;
 
-    public IndexAdapter(Context context, ArrayList<GoodMan> persons) {
-        mContext = context;
-        mPersons = persons;
+    public IndexAdapter(ArrayList<Girl> girls) {
+        this.mGirls = girls;
     }
 
     @Override
     public int getCount() {
-        return mPersons.size();
+        return mGirls.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return mGirls.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = View.inflate(mContext, R.layout.item, null);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
             holder = new ViewHolder();
             holder.mTvName = (TextView) convertView.findViewById(R.id.tv_name);
             holder.mTvPinyin = (TextView) convertView.findViewById(R.id.tv_pinyin);
@@ -49,12 +45,13 @@ public class IndexAdapter extends BaseAdapter implements ListAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        GoodMan person = mPersons.get(position);
-        mFirstPinyin = String.valueOf(person.getPinyin().charAt(0));
+        Girl person = mGirls.get(position);
+        String mFirstPinyin = String.valueOf(person.getPinyin().charAt(0));
+        String mPreFirstPinyin;
         if(position == 0) {
             mPreFirstPinyin = "-";
         }else {
-            mPreFirstPinyin = String.valueOf(mPersons.get(position - 1).getPinyin().charAt(0));
+            mPreFirstPinyin = String.valueOf(mGirls.get(position - 1).getPinyin().charAt(0));
         }
         holder.mTvPinyin.setVisibility(!TextUtils.equals(mFirstPinyin, mPreFirstPinyin) ? View.VISIBLE
                         : View.GONE);

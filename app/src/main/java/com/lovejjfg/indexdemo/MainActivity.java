@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView mLv;
     private TextView mTvLetter;
-    private ArrayList<GoodMan> mPersons = new ArrayList<>();
+    private ArrayList<Girl> mPersons = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         mLv = (ListView) findViewById(R.id.lv);
         mTvLetter = (TextView) findViewById(R.id.tv_letter);
         fillNameAndSort();
-        mLv.setAdapter(new IndexAdapter(getApplicationContext(), mPersons));
+        mLv.setAdapter(new IndexAdapter(mPersons));
         indexBar.setOnLetterChangeListener(new IndexBar.OnLetterChangeListener() {
             @Override
             public void onLetterChange(String letter) {
@@ -50,17 +50,17 @@ public class MainActivity extends AppCompatActivity {
         mHander.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mTvLetter.setVisibility(View.GONE);
+                mTvLetter.setVisibility(View.INVISIBLE);
             }
-        }, 500);
+        }, 600);
 
     }
 
     // 填充拼音, 排序
     private void fillNameAndSort() {
-        for (int i = 0; i < Cheeses.NAMES.length; i++) {
-            GoodMan person = new GoodMan(Cheeses.NAMES[i]);
-            mPersons.add(person);
+        for (int i = 0; i < Girls.NAMES.length; i++) {
+            Girl girl = new Girl(Girls.NAMES[i]);
+            mPersons.add(girl);
         }
         Collections.sort(mPersons);
     }

@@ -16,15 +16,11 @@ public class IndexBar extends View {
     private static final String[] LETTERS = new String[]{"A", "B", "C", "D", "E", "F", "G", "H",
             "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y",
             "Z"};
-    private static final int[] PRESSED_STATE = new int[]{android.R.attr.state_pressed};
     private static final int[] STATE_FOCUSED = new int[]{android.R.attr.state_focused};
-    private static final String TAG = IndexBar.class.getSimpleName();
-    private int mHeight;
     private int mCellWidth;
     private float mCellHeight;
     private Rect mRect;
     private boolean pressed;
-    private MotionEvent mMotionEvent;
 
 
     public IndexBar(Context context) {
@@ -68,7 +64,7 @@ public class IndexBar extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mHeight = getMeasuredHeight();
+        int mHeight = getMeasuredHeight();
         mCellWidth = getMeasuredWidth();
         mCellHeight = mHeight * 1.0f / LETTERS.length;
     }
@@ -77,21 +73,13 @@ public class IndexBar extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-        mMotionEvent = MotionEvent.obtain(event);
-//        }
-        return true;
-    }
-
-    @Override
-    public boolean performClick() {
-        if (mMotionEvent == null) return super.performClick();
-
         float y;
         int currentIndex;
-        switch (mMotionEvent.getAction()) {
+        invalidate();
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                y = mMotionEvent.getY();
+                refreshState(true);
+                y = event.getY();
                 // 根据触摸到的位置, 获取索引
                 currentIndex = (int) (y / mCellHeight);
                 if (currentIndex != mIndex) {
@@ -105,7 +93,7 @@ public class IndexBar extends View {
                 // Log.i(TAG, "letter: "+LETTERS[currentIndex]);
                 break;
             case MotionEvent.ACTION_MOVE:
-                y = mMotionEvent.getY();
+                y = event.getY();
                 currentIndex = (int) (y / mCellHeight);
                 if (currentIndex != mIndex) {
                     if (mOnLetterChangeListener != null) {
@@ -119,6 +107,7 @@ public class IndexBar extends View {
                 // Log.i(TAG, "letter: "+LETTERS[currentIndex]);
                 break;
             case MotionEvent.ACTION_UP:
+                refreshState(false);
                 mIndex = -1;
                 break;
 
@@ -127,6 +116,14 @@ public class IndexBar extends View {
         }
         return true;
     }
+
+    private void refreshState(boolean state) {
+        if (pressed != state) {
+            pressed = state;
+            refreshDrawableState();
+        }
+    }
+
 
     @Override
     public int[] onCreateDrawableState(int extraSpace) {
@@ -148,6 +145,7 @@ public class IndexBar extends View {
 
     private OnLetterChangeListener mOnLetterChangeListener;
 
+    @SuppressWarnings("unused")
     public OnLetterChangeListener getOnLetterChangeListener() {
         return mOnLetterChangeListener;
     }

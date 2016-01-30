@@ -14,14 +14,14 @@ public class PinYinUtil {
             format.setCaseType(HanyuPinyinCaseType.UPPERCASE);
             format.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
         }
-        char c = 0;
+        char c;
         StringBuilder sb = new StringBuilder();
         try {
             char[] charArray = s.toCharArray();
-            for(int i=0; i<charArray.length; i++) {
-                c = charArray[i];
+            for (char aCharArray : charArray) {
+                c = aCharArray;
                 String[] pinyinStringArray = PinyinHelper.toHanyuPinyinStringArray(c, format);
-                if(pinyinStringArray!= null && pinyinStringArray.length>0) {
+                if (pinyinStringArray != null && pinyinStringArray.length > 0) {
                     sb.append(pinyinStringArray[0]);
                 }
             }

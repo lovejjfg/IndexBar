@@ -8,20 +8,20 @@
         android:id="@+id/tv_pinyin"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:background="#9e9e9e"
+        android:background="@color/colorTypeBG"
         android:gravity="center_vertical"
-        android:text="S"
-        android:textColor="#000000"
-        android:textSize="25dp" />
+        android:paddingLeft="@dimen/defaultPadding"
+        android:textColor="@color/colorType"
+        android:textSize="@dimen/textSize" />
 
     <TextView
         android:id="@+id/tv_name"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="#FFFFFF"
+        android:background="@color/colorTextBG"
         android:gravity="center_vertical"
-        android:text="宋江"
-        android:textColor="#000000"
-        android:textSize="25dp" />
+        android:paddingLeft="@dimen/defaultPadding"
+        android:textColor="@color/colorText"
+        android:textSize="@dimen/textSize" />
 
 </LinearLayout>
