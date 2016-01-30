@@ -102,7 +102,6 @@ public class IndexBar extends View {
                     }
                     mIndex = currentIndex;
                 }
-                // Log.i(TAG, "letter: "+LETTERS[currentIndex]);
                 break;
             case MotionEvent.ACTION_MOVE:
                 y = event.getY();
@@ -116,7 +115,6 @@ public class IndexBar extends View {
 
                     mIndex = currentIndex;
                 }
-                // Log.i(TAG, "letter: "+LETTERS[currentIndex]);
                 break;
             case MotionEvent.ACTION_UP:
                 refreshState(false);
