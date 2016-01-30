@@ -48,8 +48,6 @@ public class IndexBar extends View {
 
     private void init() {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        setOnClickListener(null);
-        // mPaint.setAntiAlias(true);
         mPaint.setColor(normalColor);
         mPaint.setTextSize(dimension);
         mPaint.setTypeface(Typeface.DEFAULT_BOLD);
@@ -110,7 +108,6 @@ public class IndexBar extends View {
                             mOnLetterChangeListener.onLetterChange(LETTERS[currentIndex]);
                         }
                     }
-
                     mIndex = currentIndex;
                 }
                 break;

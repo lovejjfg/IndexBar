@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
         indexBar.setOnLetterChangeListener(new IndexBar.OnLetterChangeListener() {
             @Override
             public void onLetterChange(String letter) {
-//                ToastUtil.showToast(getApplicationContext(), letter);
                 showTextView(letter);
                 for(int i=0; i<mPersons.size(); i++) {
                     String firstPinyin = String.valueOf(mPersons.get(i).getPinyin().charAt(0));
