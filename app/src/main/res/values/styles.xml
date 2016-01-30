@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <declare-styleable name="IndexBar">
+        <attr name="normalColor" format="color"/>
+        <attr name="selecColor" format="color"/>
+        <attr name="indexSize" format="dimension"/>
+    </declare-styleable>
+
 </resources>

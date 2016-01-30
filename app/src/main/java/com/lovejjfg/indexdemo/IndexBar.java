@@ -1,14 +1,17 @@
 package com.lovejjfg.indexdemo;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 public class IndexBar extends View {
 
@@ -21,6 +24,9 @@ public class IndexBar extends View {
     private float mCellHeight;
     private Rect mRect;
     private boolean pressed;
+    private int normalColor;
+    private int selecColor;
+    private float dimension;
 
 
     public IndexBar(Context context) {
@@ -33,6 +39,12 @@ public class IndexBar extends View {
 
     public IndexBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        final TypedArray a = context.obtainStyledAttributes(
+                attrs, R.styleable.IndexBar, defStyleAttr, 0);
+        normalColor = a.getColor(R.styleable.IndexBar_normalColor, Color.WHITE);
+        selecColor = a.getColor(R.styleable.IndexBar_selecColor, Color.BLUE);
+        dimension = a.getDimensionPixelSize(R.styleable.IndexBar_indexSize, dp2px(14));
+        a.recycle();
         init();
     }
 
@@ -40,8 +52,8 @@ public class IndexBar extends View {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         setOnClickListener(null);
         // mPaint.setAntiAlias(true);
-        mPaint.setColor(Color.WHITE);
-        mPaint.setTextSize(dp2px(14));
+        mPaint.setColor(normalColor);
+        mPaint.setTextSize(dimension);
         mPaint.setTypeface(Typeface.DEFAULT_BOLD);
         mRect = new Rect();
     }
@@ -56,7 +68,7 @@ public class IndexBar extends View {
             float textHeight = mRect.height();
             float x = mCellWidth * 0.5f - textWidth * 0.5f;
             float y = mCellHeight * 0.5f + textHeight * 0.5f + mCellHeight * i;
-            mPaint.setColor(mIndex == i ? Color.BLUE : Color.WHITE);
+            mPaint.setColor(mIndex == i ? selecColor: normalColor);
             canvas.drawText(text, x, y, mPaint);
         }
     }
