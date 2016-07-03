@@ -48,13 +48,13 @@ public class IndexAdapter extends BaseAdapter implements ListAdapter {
         Girl person = mGirls.get(position);
         String mFirstPinyin = String.valueOf(person.getPinyin().charAt(0));
         String mPreFirstPinyin;
-        if(position == 0) {
+        if (position == 0) {
             mPreFirstPinyin = "-";
-        }else {
+        } else {
             mPreFirstPinyin = String.valueOf(mGirls.get(position - 1).getPinyin().charAt(0));
         }
         holder.mTvPinyin.setVisibility(!TextUtils.equals(mFirstPinyin, mPreFirstPinyin) ? View.VISIBLE
-                        : View.GONE);
+                : View.GONE);
         holder.mTvPinyin.setText(String.valueOf(person.getPinyin().charAt(0)));
         holder.mTvName.setText(person.getName());
         return convertView;

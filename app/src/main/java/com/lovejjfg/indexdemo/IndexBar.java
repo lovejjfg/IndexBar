@@ -7,16 +7,46 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class IndexBar extends View {
+import java.util.List;
 
+/**
+ * Created by Joe on 2016-06-20
+ * Email: lovejjfg@163.com
+ */
+public class IndexBar extends View {
+    private static final String TAG = IndexBar.class.getSimpleName();
     private Paint mPaint;
-    private static final String[] LETTERS = new String[]{"A", "B", "C", "D", "E", "F", "G", "H",
-            "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y",
-            "Z"};
+    private int mHeight;
+    private int paddingTop;
+    private int paddingBottom;
+
+    @SuppressWarnings("unused")
+    @Nullable
+    public List<String> getLetters() {
+        return letters;
+    }
+    @SuppressWarnings("unused")
+    public void setLetters(@Nullable List<String> letters) {
+
+        if (letters == null) {
+            setVisibility(GONE);
+            return;
+        }
+        this.letters = letters;
+        mHeight = getMeasuredHeight()-paddingTop-paddingBottom;
+        mCellWidth = getMeasuredWidth();
+        mCellHeight = mHeight * 1.0f / 26;
+        beginY = (mHeight - mCellHeight * letters.size()) * 0.5f;
+        invalidate();
+    }
+    @Nullable
+    private List<String> letters;
     private static final int[] STATE_FOCUSED = new int[]{android.R.attr.state_focused};
     private int mCellWidth;
     private float mCellHeight;
@@ -25,6 +55,7 @@ public class IndexBar extends View {
     private int normalColor;
     private int selecColor;
     private float dimension;
+    private float beginY;
 
 
     public IndexBar(Context context) {
@@ -39,9 +70,9 @@ public class IndexBar extends View {
         super(context, attrs, defStyleAttr);
         final TypedArray a = context.obtainStyledAttributes(
                 attrs, R.styleable.IndexBar, defStyleAttr, 0);
-        normalColor = a.getColor(R.styleable.IndexBar_normalColor, Color.WHITE);
+        normalColor = a.getColor(R.styleable.IndexBar_normalColor, Color.GRAY);
         selecColor = a.getColor(R.styleable.IndexBar_selecColor, Color.BLUE);
-        dimension = a.getDimensionPixelSize(R.styleable.IndexBar_indexSize, dp2px(14));
+        dimension = a.getDimensionPixelSize(R.styleable.IndexBar_indexSize, sp2px(14));
         a.recycle();
         init();
     }
@@ -50,66 +81,73 @@ public class IndexBar extends View {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(normalColor);
         mPaint.setTextSize(dimension);
-        mPaint.setTypeface(Typeface.DEFAULT_BOLD);
+        mPaint.setTypeface(Typeface.DEFAULT);
         mRect = new Rect();
+
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        for (int i = 0; i < LETTERS.length; i++) {
-            String text = LETTERS[i];
-            float textWidth = mPaint.measureText(text);
-            mPaint.getTextBounds(text, 0, text.length(), mRect);
-            float textHeight = mRect.height();
-            float x = mCellWidth * 0.5f - textWidth * 0.5f;
-            float y = mCellHeight * 0.5f + textHeight * 0.5f + mCellHeight * i;
-            mPaint.setColor(mIndex == i ? selecColor: normalColor);
-            canvas.drawText(text, x, y, mPaint);
+        if (letters != null) {
+            for (int i = 0; i < letters.size(); i++) {
+                String text = letters.get(i);
+                float textWidth = mPaint.measureText(text);
+                mPaint.getTextBounds(text, 0, text.length(), mRect);
+                float textHeight = mRect.height();
+                float x = mCellWidth * 0.5f - textWidth * 0.5f;
+                float y = mCellHeight * 0.5f + textHeight * 0.5f + mCellHeight * i + beginY+paddingTop;
+                mPaint.setColor(mIndex == i ? selecColor : normalColor);
+                canvas.drawText(text, x, y, mPaint);
+//                mPaint.setColor(Color.RED);
+//                mPaint.setStrokeWidth(5);
+//                canvas.drawPoint(x, y, mPaint);
+//                mPaint.setColor(Color.GREEN);
+//                canvas.drawPoint(x, getMeasuredHeight() * 0.5f, mPaint);
+            }
         }
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        int mHeight = getMeasuredHeight();
+        mHeight = getMeasuredHeight()-paddingTop-paddingBottom;
         mCellWidth = getMeasuredWidth();
-        mCellHeight = mHeight * 1.0f / LETTERS.length;
+        mCellHeight = mHeight * 1.0f / 26;
+        if (letters != null) {
+            beginY = (mHeight - mCellHeight * letters.size()) * 0.5f;
+        }
+
     }
 
     private int mIndex = -1;
 
     @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        return super.dispatchTouchEvent(event);
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         float y;
-        int currentIndex;
         invalidate();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                Log.i("TAG", "onTouchEvent:Down ");
+                getParent().requestDisallowInterceptTouchEvent(true);
                 refreshState(true);
                 y = event.getY();
-                // 根据触摸到的位置, 获取索引
-                currentIndex = (int) (y / mCellHeight);
-                if (currentIndex != mIndex) {
-                    if (mOnLetterChangeListener != null) {
-                        if (currentIndex < LETTERS.length) {
-                            mOnLetterChangeListener.onLetterChange(LETTERS[currentIndex]);
-                        }
-                    }
-                    mIndex = currentIndex;
-                }
+                checkIndex(y);
                 break;
             case MotionEvent.ACTION_MOVE:
                 y = event.getY();
-                currentIndex = (int) (y / mCellHeight);
-                if (currentIndex != mIndex) {
-                    if (mOnLetterChangeListener != null) {
-                        if (currentIndex < LETTERS.length) {
-                            mOnLetterChangeListener.onLetterChange(LETTERS[currentIndex]);
-                        }
-                    }
-                    mIndex = currentIndex;
-                }
+                checkIndex(y);
                 break;
             case MotionEvent.ACTION_UP:
                 refreshState(false);
@@ -120,6 +158,23 @@ public class IndexBar extends View {
                 break;
         }
         return true;
+    }
+
+    private void checkIndex(float y) {
+        int currentIndex;
+        if (y < beginY+getPaddingTop()) {
+            return;
+        }
+        currentIndex = (int) ((y - beginY-paddingTop) / mCellHeight);
+        if (currentIndex != mIndex) {
+            if (mOnLetterChangeListener != null) {
+                if (letters != null && currentIndex < letters.size()) {
+                    mOnLetterChangeListener.onLetterChange(letters.get(currentIndex));
+                    mIndex = currentIndex;
+//                    Log.i(TAG, "checkIndex: "+letters.get(currentIndex));
+                }
+            }
+        }
     }
 
     private void refreshState(boolean state) {
@@ -139,9 +194,9 @@ public class IndexBar extends View {
         return states;
     }
 
-    public int dp2px(int dip) {
-        final float scale = getContext().getResources().getDisplayMetrics().density;
-        return (int) (dip * scale + 0.5f);
+    public int sp2px(float sp) {
+        float scaledDensity = getContext().getResources().getDisplayMetrics().scaledDensity;
+        return (int) (sp * scaledDensity + 0.5f);
     }
 
     public interface OnLetterChangeListener {
@@ -159,4 +214,10 @@ public class IndexBar extends View {
         mOnLetterChangeListener = onLetterChangeListener;
     }
 
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        paddingTop = getPaddingTop();
+        paddingBottom = getPaddingBottom();
+    }
 }

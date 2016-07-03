@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView mLv;
     private TextView mTvLetter;
     private ArrayList<Girl> mPersons = new ArrayList<>();
+    private ArrayList<String> letters = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         mTvLetter = (TextView) findViewById(R.id.tv_letter);
         fillNameAndSort();
         mLv.setAdapter(new IndexAdapter(mPersons));
+        indexBar.setLetters(letters);
         indexBar.setOnLetterChangeListener(new IndexBar.OnLetterChangeListener() {
             @Override
             public void onLetterChange(String letter) {
@@ -60,7 +62,12 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < Girls.NAMES.length; i++) {
             Girl girl = new Girl(Girls.NAMES[i]);
             mPersons.add(girl);
+            String letter = girl.getPinyin().substring(0, 1);
+            if (!letters.contains(letter)) {
+                letters.add(letter);
+            }
         }
         Collections.sort(mPersons);
+        Collections.sort(letters);
     }
 }
