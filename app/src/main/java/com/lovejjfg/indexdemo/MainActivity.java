@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         indexBar.setLetters(letters);
         indexBar.setOnLetterChangeListener(new IndexBar.OnLetterChangeListener() {
             @Override
-            public void onLetterChange(String letter) {
+            public void onLetterChange(int position, String letter) {
                 showTextView(letter);
                 for(int i=0; i<mPersons.size(); i++) {
                     String firstPinyin = String.valueOf(mPersons.get(i).getPinyin().charAt(0));

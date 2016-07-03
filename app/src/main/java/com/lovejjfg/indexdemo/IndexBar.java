@@ -169,7 +169,7 @@ public class IndexBar extends View {
         if (currentIndex != mIndex) {
             if (mOnLetterChangeListener != null) {
                 if (letters != null && currentIndex < letters.size()) {
-                    mOnLetterChangeListener.onLetterChange(letters.get(currentIndex));
+                    mOnLetterChangeListener.onLetterChange(currentIndex,letters.get(currentIndex));
                     mIndex = currentIndex;
 //                    Log.i(TAG, "checkIndex: "+letters.get(currentIndex));
                 }
@@ -200,7 +200,7 @@ public class IndexBar extends View {
     }
 
     public interface OnLetterChangeListener {
-        void onLetterChange(String letter);
+        void onLetterChange(int position, String letter);
     }
 
     private OnLetterChangeListener mOnLetterChangeListener;
