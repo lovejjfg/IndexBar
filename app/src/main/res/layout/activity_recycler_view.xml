@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
+
+    <com.lovejjfg.indexdemo.IndexBar
+        android:id="@+id/index_bar"
+        android:layout_width="30dp"
+        app:normalColor="#ffff"
+        app:selecColor="#00f"
+        app:indexSize="14sp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/index_bar_bg"/>
+
+    <TextView
+        android:id="@+id/tv_letter"
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/tv_index_bg"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/largeTextSize"
+        android:visibility="invisible"/>
+
+</RelativeLayout>

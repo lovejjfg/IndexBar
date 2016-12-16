@@ -1,33 +1,17 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+    >
 
-    <ListView
-        android:id="@+id/lv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
+    <Button
+        android:id="@+id/bt_lv"
+        style="@style/bt"
+        android:text="ListView实现"/>
 
-    <com.lovejjfg.indexdemo.IndexBar
-        android:id="@+id/index_bar"
-        android:layout_width="30dp"
-        app:normalColor="#ffff"
-        app:selecColor="#00f"
-        app:indexSize="14sp"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/index_bar_bg"/>
+    <Button
+        android:id="@+id/bt_rv"
+        style="@style/bt"
+        android:text="RecyclerView实现"/>
 
-    <TextView
-        android:id="@+id/tv_letter"
-        android:layout_width="100dp"
-        android:layout_height="80dp"
-        android:layout_centerInParent="true"
-        android:background="@drawable/tv_index_bg"
-        android:gravity="center"
-        android:textColor="#FFFFFF"
-        android:textSize="@dimen/largeTextSize"
-        android:visibility="invisible"/>
-
-</RelativeLayout>
+</LinearLayout>
