@@ -46,17 +46,22 @@ public class IndexAdapter extends BaseAdapter implements ListAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         Girl person = mGirls.get(position);
-        String mFirstPinyin = String.valueOf(person.getPinyin().charAt(0));
+        String pinyin = person.getPinyin();
+        String name = person.getName();
+        String mFirstPinyin = String.valueOf(TextUtils.isEmpty(pinyin) ? name.charAt(0) : pinyin.charAt(0));
         String mPreFirstPinyin;
         if (position == 0) {
             mPreFirstPinyin = "-";
         } else {
-            mPreFirstPinyin = String.valueOf(mGirls.get(position - 1).getPinyin().charAt(0));
+            Girl preGirl = mGirls.get(position - 1);
+            String prePinyin = preGirl.getPinyin();
+            String preName = preGirl.getName();
+            mPreFirstPinyin = String.valueOf(TextUtils.isEmpty(prePinyin) ? preName.charAt(0) : prePinyin.charAt(0));
         }
-        holder.mTvPinyin.setVisibility(!TextUtils.equals(mFirstPinyin, mPreFirstPinyin) ? View.VISIBLE
+        holder.mTvPinyin.setVisibility(mFirstPinyin.compareToIgnoreCase(mPreFirstPinyin) != 0 ? View.VISIBLE
                 : View.GONE);
-        holder.mTvPinyin.setText(String.valueOf(person.getPinyin().charAt(0)));
-        holder.mTvName.setText(person.getName());
+        holder.mTvPinyin.setText(String.valueOf(mFirstPinyin.toUpperCase()));
+        holder.mTvName.setText(name);
         return convertView;
     }
 
