@@ -3,6 +3,7 @@
 
 ![index](https://raw.githubusercontent.com/lovejjfg/IndexMasterDemo/master/index.gif)
 
+### V1.0.0
 * 可以自己设置背景的状态
 * 可自定义textsize
 * 可自定义选中文字的颜色
@@ -30,3 +31,9 @@
                 //dosomething...
               }
           });
+            
+                    
+### V1.0.1
+          
+1、支持字母和数字的类型
+2、增加RecyclerView的Demo
