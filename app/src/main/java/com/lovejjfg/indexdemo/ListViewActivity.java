@@ -4,12 +4,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ListViewActivity extends AppCompatActivity {
 
@@ -33,6 +37,10 @@ public class ListViewActivity extends AppCompatActivity {
             @Override
             public void onLetterChange(int position, String letter) {
                 showTextView(letter);
+                if ("#".equals(letter)) {
+                    mLv.setSelection(0);
+                    return;
+                }
                 for (int i = 0; i < mPersons.size(); i++) {
                     Girl girl = mPersons.get(i);
                     String pinyin = girl.getPinyin();
@@ -66,6 +74,12 @@ public class ListViewActivity extends AppCompatActivity {
         for (int i = 0; i < Girls.NAMES.length; i++) {
             Girl girl = new Girl(Girls.NAMES[i]);
             mPersons.add(girl);
+            if (DigitalUtil.isDigital(girl.getName())) {
+                if (!letters.contains("#")) {
+                    letters.add("#");
+                }
+                continue;
+            }
             String pinyin = girl.getPinyin();
             String letter;
             if (!TextUtils.isEmpty(pinyin)) {

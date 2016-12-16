@@ -23,6 +23,10 @@ public class Girls {
     public static final String[] NAMES = new String[]
             {
                     "xxxx",
+                    "456",
+                    "777777",
+                    "666666",
+                    "333333",
                     "zaa",
                     "zzz",
                     "sss",

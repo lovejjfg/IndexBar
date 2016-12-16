@@ -58,6 +58,12 @@ public class IndexAdapter extends BaseAdapter implements ListAdapter {
             String preName = preGirl.getName();
             mPreFirstPinyin = String.valueOf(TextUtils.isEmpty(prePinyin) ? preName.charAt(0) : prePinyin.charAt(0));
         }
+        if (DigitalUtil.isDigital(mFirstPinyin)) {
+            mFirstPinyin = "#";
+        }
+        if (DigitalUtil.isDigital(mPreFirstPinyin)) {
+            mPreFirstPinyin = "#";
+        }
         holder.mTvPinyin.setVisibility(mFirstPinyin.compareToIgnoreCase(mPreFirstPinyin) != 0 ? View.VISIBLE
                 : View.GONE);
         holder.mTvPinyin.setText(String.valueOf(mFirstPinyin.toUpperCase()));
